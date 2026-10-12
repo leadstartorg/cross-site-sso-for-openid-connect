@@ -70,20 +70,17 @@ In `wp-config.php`, if you can edit. A signing key in the options table is in ev
 
 If you cannot edit that file, many managed hosts allow plugin installation and no file access at all, set it under **Tools > Cross-Site SSO > Settings** instead. The option is stored with autoload off and is never displayed again after saving. A constant, when defined, always wins and the field becomes read-only.
 
-The screen shows a short fingerprint of the secret, so you can confirm every site holds the same value. When matching fingerprints this mean matching secrets; different ones explain the 403s.
+The screen shows a short fingerprint of the secret, so you can confirm every site holds the same value. When the fingerprints match, this mean matching secrets; while a mismatch explains the 403 errors.
 
 = What does the status codes that mean? =
 
 The status code is the diagnosis, and these are unrelated:
 
-* **404** — no REST route on that site, so the plugin is not installed or not
-  activated.
-* **503** — the plugin is installed there but has no secret or not configured
-  yet.
+* **404** — no REST route on that site, so the plugin is not installed or not activated.
+* **503** — the plugin is installed but has no secret or not configured yet.
 * **403** — the request was signed, received, but refused. 
 
-You have to work through the sites in order: install and activate everywhere first, then
-configure and test.
+You have to work through the sites in order: install and activate on sites, then configure and test.
 
 = Can I mix wp-config.php constants and the Settings tab across sites? =
 
@@ -91,7 +88,7 @@ Yes, each site resolves each setting independently: the constant if one is defin
 
 = Do all sites need the same plugin version? =
 
-They interoperate across versions: the signing format, headers, REST routes and logout tickets have not changed since 1.0.0. Running the same version everywhere is still recommended, because newer versions add local behavior (for example, refusing silent sign-on for administrators) that only applies where installed.
+They interoperate across versions: the signing format, headers, REST routes and logout tickets have not changed since 1.0.0. When running the same version everywhere is still recommended, because newer versions add local behavior (for example, refusing silent sign-on for administrators) that only applies where installed.
 
 = Can I install it in mu-plugins on some sites and as a normal plugin on others? =
 
@@ -99,12 +96,11 @@ Yes, per site. What you must not do is install it in **both** places on the **sa
 
 = Can I run this on a host with no SFTP access? =
 
-Yes, every setting can be entered on the Settings tab. The plugin only needs to
-be installable and able to make outbound HTTPS requests.
+Yes, every setting can be entered on the Settings tab. The plugin only needs to be installable and able to make outbound HTTPS requests.
 
 = What role do new users get? =
 
-Whatever **Settings > General > New User Default Role** says on that site normally `subscriber`. OpenID Connect Generic does not set a role when it creates the account, so `wp_insert_user()` falls back to that option. Changing the setting is usually the whole answer; no code is needed.
+Whatever **Settings > General > New User Default Role** says on that site normally `subscriber`. OpenID Connect Generic does not set a role when it creates the account, so `wp_insert_user()` falls back to that option., changing the setting is usually the whole answer, no code is needed.
 
 In order to decide the role per user instead, use the `ls_sso_map_roles` filter. The plugin runs on every SSO login, including when no role claim is configured:
 
@@ -121,7 +117,7 @@ arrives, and role mapping then appears broken with no error.
 
 = Does this require WooCommerce? =
 
-No, WooCommerce is needed only for the optional order-history feature, and only
+No, WooCommerce is only needed for the optional order-history feature, and only
 on the one site that runs the store.
 
 = Does this work with WordPress Multisite? =
@@ -133,7 +129,7 @@ WordPress core, and does not need this plugin.
 = What happens when a peer site is offline? =
 
 All updates are queued and retried with backoff, using Action Scheduler when
-available and WP-Cron otherwise. The order history requests use a timeout and a
+available and WP-Cron otherwise. The order history requests uses a timeout and a
 cached result, so a slow WooCommerce site never blocks a page for a visitor.
 
 = Does SSO redirect every visitor, including search engines? =
@@ -149,7 +145,7 @@ event type, the peer site, the route, a WordPress user ID, and success or
 failure and never request bodies, meta values, tokens, or signatures. Rows are
 deleted automatically after 30 days, filterable via `ls_sso_log_retention_days`. 
 
-When uninstalling it removes the log table entirely.
+When uninstalling the plugin, it removes the log table entirely.
 
 == Screenshots ==
 
