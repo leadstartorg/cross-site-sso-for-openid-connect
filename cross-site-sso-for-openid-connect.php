@@ -8,8 +8,8 @@
  * Requires PHP:      7.4
  * Author:            Leadstart Media, Inc.
  * Author URI:        https://leadstart.org
- * License:           GPL-2.0-or-later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * License:           GPL-3.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       cross-site-sso-for-openid-connect
  * Domain Path:       /languages
  *
